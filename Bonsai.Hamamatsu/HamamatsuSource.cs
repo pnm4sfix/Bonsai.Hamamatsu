@@ -17,7 +17,7 @@ using Hamamatsu.DCAM4;
 
 namespace Bonsai.Hamamatsu
 {
-    [Description("Generates a sequence of images acquired from the specified Ximea camera.")]
+    [Description("Generates a sequence of images acquired from the specified Hamamatsu camera.")]
     [Combinator(MethodName = nameof(Generate))]
     [WorkflowElementCategory(ElementCategory.Source)]
     public class HamamatsuSource: Source<IplImage>
@@ -41,15 +41,16 @@ namespace Bonsai.Hamamatsu
         bool autoGain;
         bool autoExposure;
         int autoWhiteBalance;
-        DCAMBUF_FRAME frame = new DCAMBUF_FRAME();
+        DCAMBUF_FRAME frame; 
         MyDcamProp exp;
         MyDcamProp trigger;
+        MyDcamProp bits;
         bool deviceOpen = false;
 
         public HamamatsuSource()
         {
             
-            Exposure = 1226;
+            Exposure = 1226; // in us
 
             OffsetX = 432;
             OffsetY = 40;
@@ -69,33 +70,39 @@ namespace Bonsai.Hamamatsu
                         try
                         {
                             int iframe = 0;
+                            int oldiframe = 0;
                             while (!cancellationToken.IsCancellationRequested)
                             {
 
                                 
-                                frame.iFrame = iframe; //this needs to iterate but need the
+                                frame.iFrame = iframe; //this needs to iterate 
 
-                                
-                                myCam.buf_copyframe(ref frame);
-
-
-                                // Lock the bitmap's bits. 
-                                //Rectangle rc = new Rectangle(0, 0, frame.width, frame.height);
-                                //m_bitmap = new Bitmap(frame.width, frame.height);
-                                //SUBACQERR err = subacq.copydib(ref m_bitmap, frame, ref rc, m_lut.inmax, m_lut.inmin);
-                                
-                                //System.Drawing.Imaging.BitmapData imgData = frame.LockBits
-                                //(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite, frame.PixelFormat);
-
-                                //IntPtr ptr = imgData.Scan0;
+                                if (iframe > oldiframe)
+                                {
+                                    myCam.buf_lockframe(ref frame);
 
 
 
-                                OpenCV.Net.Size outSize = new OpenCV.Net.Size(frame.width, frame.height);
-                                output = new IplImage(outSize, OpenCV.Net.IplDepth.U8, 1, frame.buf);
-                                
-                                observer.OnNext(output.Clone());
-                                iframe += 1;
+
+                                    // Lock the bitmap's bits. 
+                                    //Rectangle rc = new Rectangle(0, 0, frame.width, frame.height);
+                                    //m_bitmap = new Bitmap(frame.width, frame.height);
+                                    //SUBACQERR err = subacq.copydib(ref m_bitmap, frame, ref rc, m_lut.inmax, m_lut.inmin);
+
+                                    //System.Drawing.Imaging.BitmapData imgData = frame.LockBits
+                                    //(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite, frame.PixelFormat);
+
+                                    //IntPtr ptr = imgData.Scan0;
+
+
+
+                                    OpenCV.Net.Size outSize = new OpenCV.Net.Size(frame.width, frame.height);
+                                    output = new IplImage(outSize, OpenCV.Net.IplDepth.U8, 1, frame.buf);
+
+                                    observer.OnNext(output.Clone());
+                                    oldiframe = iframe;
+                                    iframe += 1;
+                                }
                                 //frame.UnlockBits(imgData);
                                 
 
@@ -188,7 +195,8 @@ namespace Bonsai.Hamamatsu
             }
 
             //allocate buffer
-            myCam.buf_alloc(6000); //number of frames
+            myCam.buf_alloc(100); //number of frames
+            frame =  new DCAMBUF_FRAME();
 
             //set capture mode as continuous
             myCam.m_capmode = DCAMCAP_START.SEQUENCE;
@@ -203,7 +211,7 @@ namespace Bonsai.Hamamatsu
 
             exp = new MyDcamProp(myCam, DCAMIDPROP.EXPOSURETIME);
             trigger = new MyDcamProp(myCam, DCAMIDPROP.TRIGGERSOURCE);
-
+            bits = new MyDcamProp(myCam, DCAMIDPROP.BITSPERCHANNEL);
 
             //set exposure
             exp.setvalue(Exposure);
@@ -214,6 +222,7 @@ namespace Bonsai.Hamamatsu
 
             // Set image output format to monochrome 8 bit
             //myCam.SetParam(PRM.IMAGE_DATA_FORMAT, IMG_FORMAT.MONO8);
+            bits.setvalue((double)8);
 
             //Set Acquisition Mode
             //myCam.SetParam(PRM.ACQ_TIMING_MODE, 1);
