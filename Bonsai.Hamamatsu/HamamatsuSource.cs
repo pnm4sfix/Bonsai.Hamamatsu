@@ -42,6 +42,8 @@ namespace Bonsai.Hamamatsu
         bool autoExposure;
         int autoWhiteBalance;
         DCAMBUF_FRAME frame = new DCAMBUF_FRAME();
+        MyDcamProp exp;
+        MyDcamProp trigger;
         bool deviceOpen = false;
 
         public HamamatsuSource()
@@ -66,14 +68,15 @@ namespace Bonsai.Hamamatsu
                         Load();
                         try
                         {
+                            int iframe = 0;
                             while (!cancellationToken.IsCancellationRequested)
                             {
 
                                 
-                                frame.iFrame = 1; //this needs to iterate but need the
+                                frame.iFrame = iframe; //this needs to iterate but need the
 
                                 
-                                myCam.buf_lockframe(ref frame);
+                                myCam.buf_copyframe(ref frame);
 
 
                                 // Lock the bitmap's bits. 
@@ -92,6 +95,7 @@ namespace Bonsai.Hamamatsu
                                 output = new IplImage(outSize, OpenCV.Net.IplDepth.U8, 1, frame.buf);
                                 
                                 observer.OnNext(output.Clone());
+                                iframe += 1;
                                 //frame.UnlockBits(imgData);
                                 
 
@@ -124,23 +128,23 @@ namespace Bonsai.Hamamatsu
         [Description("The ROI offset in Y axis at which to acquire image frames.")]
         public int OffsetY { get; set; }
 
-        [Range(0, 79)]
-        [Description("The fixed gain value, used when auto gain is disabled.")]
-        [Editor(DesignTypes.SliderEditor, "System.Drawing.Design.UITypeEditor, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
-        public int Gain
-        {
-            get { return gain; }
-            set
-            {
-                gain = value;
-                if (deviceOpen)
-                {
-                    myCam.SetParam(PRM.GAIN, value);
-                    
-                }
-                
-            }
-        }
+        //[Range(0, 79)]
+        //[Description("The fixed gain value, used when auto gain is disabled.")]
+        //[Editor(DesignTypes.SliderEditor, "System.Drawing.Design.UITypeEditor, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
+        //public int Gain
+        //{
+        //    get { return gain; }
+        //    set
+        //    {
+        //        gain = value;
+        //        if (deviceOpen)
+        //        {
+        //            myCam.SetParam(PRM.GAIN, value);
+        //            
+        //        }
+        //        
+        //    }
+        //}
 
         [Range(0, 5110)]
         [Description("The fixed exposure value, used when auto exposure is disabled.")]
@@ -154,8 +158,9 @@ namespace Bonsai.Hamamatsu
               if (deviceOpen)
               {
                     
-                    myCam.SetParam(PRM.EXPOSURE, (Int32)value);
-              }
+                    exp.setvalue((double)exposure);
+                    //myCam.SetParam(PRM.EXPOSURE, (Int32)value);
+                }
                 
                 
             }
@@ -172,7 +177,15 @@ namespace Bonsai.Hamamatsu
             }
 
             //open camera
-            myCam.dev_open(0);
+            if (!myCam.dev_open(0)) 
+            {
+                deviceOpen = false;
+            }
+
+            else
+            {
+                deviceOpen = true;
+            }
 
             //allocate buffer
             myCam.buf_alloc(6000); //number of frames
@@ -188,20 +201,26 @@ namespace Bonsai.Hamamatsu
             }
 
 
+            exp = new MyDcamProp(myCam, DCAMIDPROP.EXPOSURETIME);
+            trigger = new MyDcamProp(myCam, DCAMIDPROP.TRIGGERSOURCE);
+
+
             //set exposure
-            myCam.SetParam(PRM.EXPOSURE, Exposure);
+            exp.setvalue(Exposure);
+            //myCam.SetParam(PRM.EXPOSURE, Exposure);
 
             // Set device gain 
-            myCam.SetParam(PRM.GAIN, Gain);
+            //myCam.SetParam(PRM.GAIN, Gain);
 
             // Set image output format to monochrome 8 bit
-            myCam.SetParam(PRM.IMAGE_DATA_FORMAT, IMG_FORMAT.MONO8);
+            //myCam.SetParam(PRM.IMAGE_DATA_FORMAT, IMG_FORMAT.MONO8);
 
             //Set Acquisition Mode
-            myCam.SetParam(PRM.ACQ_TIMING_MODE, 1);
-            
+            //myCam.SetParam(PRM.ACQ_TIMING_MODE, 1);
+
             //Set external trigger source
-            myCam.SetParam(PRM.FRAMERATE, FrameRate);
+            trigger.setvalue(DCAMPROP.TRIGGERSOURCE.EXTERNAL);
+            //myCam.SetParam(PRM.FRAMERATE, FrameRate);
             
             //Specify ROI params
             //myCam.SetParam(PRM.WIDTH, ROIWidth);

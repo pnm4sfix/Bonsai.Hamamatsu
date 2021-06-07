@@ -156,6 +156,20 @@ namespace Bonsai.Hamamatsu
             return ! m_lasterr.failed();
         }
 
+
+        public bool buf_copyframe(ref DCAMBUF_FRAME aFrame)
+        {
+            if (m_hdcam == IntPtr.Zero)
+            {
+                m_lasterr = DCAMERR.INVALIDHANDLE;
+            }
+            else
+            {
+                m_lasterr = dcambuf.copyframe(m_hdcam, ref aFrame);
+            }
+
+            return !m_lasterr.failed();
+        }
         // dcambuf_copyframe(ByVal hdcam As IntPtr, ByRef pFrame As DCAMBUF_FRAME) As Integer
         // dcambuf_copymetadata(ByVal hdcam As IntPtr, ByRef hdr As DCAM_METADATAHDR) As Integer
 
