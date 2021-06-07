@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "qiWAIk7D6bVUbHdFyj5KpfTVC3pUIdJ7lAp2i67c7jFFW9NkiMg0ebkRIcT2cDmM4Gkb7Kozqr2uIvEd1TO27A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\zwartlab-users\\Documents\\GitHub\\Bonsai.Hamamatsu\\Bonsai.Hamamatsu\\Bonsai.Hamamatsu.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\zwartlab-users\\.nuget\\packages\\bonsai.core\\2.6.0\\bonsai.core.2.6.0.nupkg.sha512",
+    "C:\\Users\\zwartlab-users\\.nuget\\packages\\opencv.net\\3.3.1\\opencv.net.3.3.1.nupkg.sha512",
+    "C:\\Users\\zwartlab-users\\.nuget\\packages\\rx-core\\2.2.5\\rx-core.2.2.5.nupkg.sha512",
+    "C:\\Users\\zwartlab-users\\.nuget\\packages\\rx-interfaces\\2.2.5\\rx-interfaces.2.2.5.nupkg.sha512",
+    "C:\\Users\\zwartlab-users\\.nuget\\packages\\rx-linq\\2.2.5\\rx-linq.2.2.5.nupkg.sha512"
+  ],
+  "logs": []
+}
