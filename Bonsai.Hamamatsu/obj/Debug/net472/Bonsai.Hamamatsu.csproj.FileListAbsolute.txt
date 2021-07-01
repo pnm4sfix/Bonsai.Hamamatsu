@@ -1,0 +1,14 @@
+C:\Users\zwartlab-users\Documents\GitHub\Bonsai.Hamamatsu\Bonsai.Hamamatsu\bin\Debug\net472\Bonsai.Hamamatsu.dll
+C:\Users\zwartlab-users\Documents\GitHub\Bonsai.Hamamatsu\Bonsai.Hamamatsu\bin\Debug\net472\Bonsai.Hamamatsu.pdb
+C:\Users\zwartlab-users\Documents\GitHub\Bonsai.Hamamatsu\Bonsai.Hamamatsu\bin\Debug\net472\Bonsai.Core.dll
+C:\Users\zwartlab-users\Documents\GitHub\Bonsai.Hamamatsu\Bonsai.Hamamatsu\bin\Debug\net472\OpenCV.Net.dll
+C:\Users\zwartlab-users\Documents\GitHub\Bonsai.Hamamatsu\Bonsai.Hamamatsu\bin\Debug\net472\System.Reactive.Core.dll
+C:\Users\zwartlab-users\Documents\GitHub\Bonsai.Hamamatsu\Bonsai.Hamamatsu\bin\Debug\net472\System.Reactive.Interfaces.dll
+C:\Users\zwartlab-users\Documents\GitHub\Bonsai.Hamamatsu\Bonsai.Hamamatsu\bin\Debug\net472\System.Reactive.Linq.dll
+C:\Users\zwartlab-users\Documents\GitHub\Bonsai.Hamamatsu\Bonsai.Hamamatsu\obj\Debug\net472\Bonsai.Hamamatsu.csprojAssemblyReference.cache
+C:\Users\zwartlab-users\Documents\GitHub\Bonsai.Hamamatsu\Bonsai.Hamamatsu\obj\Debug\net472\Bonsai.Hamamatsu.AssemblyInfoInputs.cache
+C:\Users\zwartlab-users\Documents\GitHub\Bonsai.Hamamatsu\Bonsai.Hamamatsu\obj\Debug\net472\Bonsai.Hamamatsu.AssemblyInfo.cs
+C:\Users\zwartlab-users\Documents\GitHub\Bonsai.Hamamatsu\Bonsai.Hamamatsu\obj\Debug\net472\Bonsai.Hamamatsu.csproj.CoreCompileInputs.cache
+C:\Users\zwartlab-users\Documents\GitHub\Bonsai.Hamamatsu\Bonsai.Hamamatsu\obj\Debug\net472\Bonsai.Hamamatsu.csproj.CopyComplete
+C:\Users\zwartlab-users\Documents\GitHub\Bonsai.Hamamatsu\Bonsai.Hamamatsu\obj\Debug\net472\Bonsai.Hamamatsu.dll
+C:\Users\zwartlab-users\Documents\GitHub\Bonsai.Hamamatsu\Bonsai.Hamamatsu\obj\Debug\net472\Bonsai.Hamamatsu.pdb
